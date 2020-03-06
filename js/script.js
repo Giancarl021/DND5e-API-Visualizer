@@ -34,9 +34,38 @@ async function parseItem(url) {
     const item = document.createElement('div');
     item.className = 'item';
     const title = url.split('/').pop().split('-').map(word => word.slice(0, 1).toUpperCase() + word.slice(1)).join(' ');
-    const links = ((await get(apiUrl + url)).results || []).map(item => `<a href="${apiUrl + item.url}">${item.name}</a>`).join('');
+    const links = ((await get(apiUrl + url)).results || []).map(item => `<span onclick="loadModal('${apiUrl + item.url}')">${item.name}</span>`).join('');
     item.innerHTML = `<h1 class="title">${title}</h1><div class="links">${links}</div>`;
     document.querySelector('section').appendChild(item);
+}
+
+async function loadModal(url) {
+    const modal = document.getElementById('modal');
+    const data = await get(url);
+    console.log(data);
+    modal.innerHTML = parseType(data);
+    modal.style.opacity = '1';
+    modal.style.pointerEvents = 'all';
+
+    function parseType(data) {
+        const type = data.url.split('/').slice(-2, -1)[0];
+        console.log(type);
+        let r = '';
+        switch(type) {
+            case 'ability-scores':
+                r = `<h1>${data.full_name}</h1>
+                     <ul>${data.desc ? '<li>' + data.desc.join('</li><li>') + '</li>' : ''}</ul>
+                     <ul>${data.skills ? '<li>' + data.skills.map(item => `<span style="cursor: pointer" onclick="loadModal(\'${apiUrl + item.url}\')">${item.name}</span>`).join('</li><li>') + '</li>' : ''}</ul>`;
+                break;
+            // case 'classes':
+            //
+            //     break;
+            // case '':
+            //
+            //     break;
+        }
+        return r;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', init);
