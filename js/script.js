@@ -34,8 +34,8 @@ async function parseItem(url) {
     const item = document.createElement('div');
     item.className = 'item';
     const title = url.split('/').pop().split('-').map(word => word.slice(0, 1).toUpperCase() + word.slice(1)).join(' ');
-    const links = ((await get(apiUrl + url)).results || []).map(item => `<a href="${apiUrl + item.url}">${item.name}</a>`).join('<br/>');
-    item.innerHTML = `<h1>${title}</h1><div class="links">${links}</div>`;
+    const links = ((await get(apiUrl + url)).results || []).map(item => `<a href="${apiUrl + item.url}">${item.name}</a>`).join('');
+    item.innerHTML = `<h1 class="title">${title}</h1><div class="links">${links}</div>`;
     document.querySelector('section').appendChild(item);
 }
 

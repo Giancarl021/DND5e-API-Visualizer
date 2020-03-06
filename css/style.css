@@ -46,17 +46,26 @@ section {
     grid-template-rows: var(--first-row) calc(100% - var(--first-row));
 }
 
-.title {
+.item > .title {
     width: 100%;
     text-align: center;
 }
 
-.links {
+.item > .links {
     width: 100%;
     background-color: #0002;
 }
 
-a {
+.item > .links a {
     color: var(--color);
     text-decoration: none;
+    display: block;
+    padding: 2px;
+    margin: 0;
+    transition: letter-spacing .3s;
+}
+
+.links a:hover {
+    letter-spacing: 5px;
+    background-color: #0002;
 }
