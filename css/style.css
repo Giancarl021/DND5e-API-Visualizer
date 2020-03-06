@@ -7,6 +7,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Consolas', monospace;
 }
 
 body {
@@ -21,5 +22,7 @@ header {
     justify-content: center;
     align-items: center;
     text-transform: uppercase;
+    letter-spacing: 5px;
+    font-weight: 900;
 }
 
