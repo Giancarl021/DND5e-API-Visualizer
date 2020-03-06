@@ -15,12 +15,14 @@ async function get(url) {
 async function init() {
     const index = Math.floor(Math.random() * colors.length);
     document.documentElement.style.setProperty('--color', colors[index]);
+
     const urls = await get(apiUrl + '/api');
-    const size = ((obj) => {
+    const size = (obj => {
         let i = 0;
         for (const key in obj) if (obj.hasOwnProperty(key)) i++;
         return i;
     })(urls);
+
     for (const key in urls) {
         if (urls.hasOwnProperty(key)) {
             parseItem(urls[key]).catch(console.log);
@@ -31,11 +33,9 @@ async function init() {
 async function parseItem(url) {
     const item = document.createElement('div');
     item.className = 'item';
-    console.log(url);
-    const title = url.split('/').pop().split('-').map(word => {
-        return word.slice(0, 1).toUpperCase() + word.slice(1);
-    }).join(' ');
-    item.innerText = title;
+    const title = url.split('/').pop().split('-').map(word => word.slice(0, 1).toUpperCase() + word.slice(1)).join(' ');
+    const links = ((await get(apiUrl + url)).results || []).map(item => `<a href="${apiUrl + item.url}">${item.name}</a>`).join('<br/>');
+    item.innerHTML = `<h1>${title}</h1><div class="links">${links}</div>`;
     document.querySelector('section').appendChild(item);
 }
 
